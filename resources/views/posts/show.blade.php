@@ -33,6 +33,15 @@
                     <div class="card-text mb-4">
                         {!! nl2br(e($post->description)) !!}
                     </div>
+                    @if($post->category)
+                     <p class="text-muted">
+                         <small>category: 
+                             <a href="{{ route('categories.show', $post->category->id) }}" class="badge bg-info text-dark">
+                                 {{ $post->category->name }}
+                             </a>
+                         </small>
+                     </p>
+                     @endif
                     
                     <div class="d-flex gap-2">
                         <a href="{{ route('posts.index') }}" class="btn btn-outline-secondary">

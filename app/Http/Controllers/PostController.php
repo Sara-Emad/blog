@@ -2,114 +2,108 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Category;
+use App\Http\Requests\PostRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    function allPosts()
+    public function allPosts()
     {
-        $posts = Post::with('user')->paginate(5);
+        $posts = Post::with(['user', 'category'])->paginate(5);
         return view("posts.index", ["posts" => $posts]);
     }
 
-    function show($id)
+    public function show($id)
     {
-        $post = Post::with('user')->findOrFail($id);
+        $post = Post::with(['user', 'category'])->findOrFail($id);
         return view("posts.show", ["post" => $post]);
     }
 
-    function destroy($id)
+    public function destroy($id)
     {
         $post = Post::findOrFail($id);
-
         if ($post->image && !Str::startsWith($post->image, 'http')) {
             Storage::disk('public')->delete($post->image);
         }
         $post->delete();
-        return to_route("posts.index")->with('success', 'Post deleted successfully');
+        return to_route("posts.index")->with('success', 'Delete Successfuly');
     }
 
-    function create()
+    public function create()
     {
         $users = User::all();
-        return view("posts.create", compact("users"));
+        $categories = Category::all();
+        return view("posts.create", compact("users", "categories"));
     }
 
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|max:255|min:3',
-            'description' => 'required|min:10',
-            'image' => 'required|image|max:2048', 
-            'user_id' => 'required|exists:users,id'
-        ]);
+        $validated = $request->validated();
         
-
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('posts', 'public');
         }
-    
+        
         $post = Post::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'image' => $imagePath,
             'user_id' => $validated['user_id'],
+            'category_id' => $validated['category_id'],
             'slug' => Str::slug($validated['title'])
         ]);
-    
+        
         return to_route("posts.show", $post->id)
-            ->with('success', 'Post created successfully');
+            ->with('success', 'Done successfuly');
     }
 
-    function edit($id)
+    public function edit($id)
     {
         $users = User::all();
+        $categories = Category::all();
         $post = Post::findOrFail($id);
-        return view("posts.edit", compact("post", "users"));
+        return view("posts.edit", compact("post", "users", "categories"));
     }
 
-    function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
         $post = Post::findOrFail($id);
+        $validated = $request->validated();
         
-        $validationRules = [
-            'title' => 'required|max:255',
-            'description' => 'required|min:10',
-            'user_id' => 'required|exists:users,id'
-        ];
-        
-
-        if ($request->hasFile('image')) {
-            $validationRules['image'] = 'image|max:2048';
-        } elseif (!$post->image) {
-            $validationRules['image'] = 'required|image|max:2048';
-        }
-        
-        $validated = $request->validate($validationRules);
-        
-        // Handle image update
+        // Initialize $imagePath with the existing image path
         $imagePath = $post->image;
+        
         if ($request->hasFile('image')) {
             // Delete old image if it exists and is not a URL
             if ($post->image && !Str::startsWith($post->image, 'http')) {
                 Storage::disk('public')->delete($post->image);
             }
+            // Store the new image
             $imagePath = $request->file('image')->store('posts', 'public');
+        } elseif (!$request->hasFile('image') && $request->has('remove_image')) {
+            // If remove_image is set and no new image is uploaded, delete the old image
+            if ($post->image && !Str::startsWith($post->image, 'http')) {
+                Storage::disk('public')->delete($post->image);
+            }
+            $imagePath = null;
         }
-
+        // If no new image is uploaded and no remove request, keep the old image
+        
         $post->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'image' => $imagePath,
+            'image' => $imagePath, 
             'user_id' => $validated['user_id'],
+            'category_id' => $validated['category_id'],
             'slug' => Str::slug($validated['title'])
         ]);
-
-        return to_route("posts.show", $post->id)->with('success', 'Post updated successfully');
+        
+        return to_route("posts.show", $post->id)
+            ->with('success', 'Post updated successfully');
     }
 }

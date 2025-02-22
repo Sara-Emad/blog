@@ -9,7 +9,7 @@ Add Post
             <h2>Add New Post</h2>
         </div>
         
-        @if ($errors->any())
+        <!-- @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error)
@@ -17,7 +17,7 @@ Add Post
                     @endforeach
                 </ul>
             </div>
-        @endif
+        @endif -->
 
         <form action="{{ route('posts.store') }}" method="post" class="needs-validation" enctype="multipart/form-data">
             @csrf
@@ -29,7 +29,7 @@ Add Post
                        placeholder="Enter post title" 
                        name="title" 
                        value="{{ old('title') }}"
-                       required>
+                       d>
                 @error('title')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -42,7 +42,7 @@ Add Post
                           rows="3" 
                           placeholder="Enter post description" 
                           name="description"
-                          required>{{ old('description') }}</textarea>
+                          d>{{ old('description') }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -53,7 +53,7 @@ Add Post
                 <select class="form-control @error('user_id') is-invalid @enderror" 
                         name="user_id" 
                         id="user_id"
-                        required>
+                        d>
                     <option value="">Select a User</option>
                     @foreach($users as $user)
                         <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
@@ -73,17 +73,38 @@ Add Post
                        id="image" 
                        name="image"
                        accept="image/*"
-                       required>
+                       d>
                 @error('image')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
                 <small class="text-muted">Please upload an image file (JPG, PNG, GIF, etc.) up to 2MB</small>
             </div>
+            <div class="mb-3">
+    <label for="category_id" class="form-label">category <span class="text-danger">*</span></label>
+    <select class="form-control @error('category_id') is-invalid @enderror" 
+            name="category_id" 
+            id="category_id"
+            d>
+        <option value=""> choose category</option>
+        @foreach($categories as $category)
+            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('category_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+           <br>
            
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Add Post</button>
                 <a href="{{ route('posts.index') }}" class="btn btn-secondary">Cancel</a>
             </div>
+
+          
+</div>
+
         </form>
     </div>
 </div>

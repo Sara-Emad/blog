@@ -9,7 +9,7 @@ Edit Post
             <h2>Update Post</h2>
         </div>
         
-        @if ($errors->any())
+        <!-- @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error)
@@ -17,7 +17,7 @@ Edit Post
                     @endforeach
                 </ul>
             </div>
-        @endif
+        @endif -->
 
         <form action="{{ route('posts.update', $post->id) }}" method="post" enctype="multipart/form-data">
             @csrf
@@ -30,7 +30,7 @@ Edit Post
                        placeholder="Enter post title" 
                        name="title" 
                        value="{{ old('title', $post->title) }}"
-                       required>
+                       d>
                 @error('title')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -43,7 +43,7 @@ Edit Post
                           rows="3" 
                           placeholder="Enter post description" 
                           name="description"
-                          required>{{ old('description', $post->description) }}</textarea>
+                          d>{{ old('description', $post->description) }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -54,7 +54,7 @@ Edit Post
                 <select class="form-control @error('user_id') is-invalid @enderror" 
                         name="user_id" 
                         id="user_id"
-                        required>
+                        d>
                     <option value="">Select a User</option>
                     @foreach($users as $user)
                         <option value="{{ $user->id }}" {{ (old('user_id', $post->user_id) == $user->id) ? 'selected' : '' }}>
@@ -68,31 +68,46 @@ Edit Post
             </div>
 
             <div class="mb-3">
-                <label for="image" class="form-label">Post Image</label>
-                @if($post->image)
-                    <div class="mb-2">
-                        <img src="{{ Str::startsWith($post->image, 'http') ? $post->image : asset('storage/' . $post->image) }}" 
-                             alt="Current post image" 
-                             class="img-thumbnail" 
-                             style="max-height: 200px">
-                        <p class="text-muted mb-0">Current image</p>
-                    </div>
-                @endif
-                <input type="file" 
-                       class="form-control @error('image') is-invalid @enderror" 
-                       id="image" 
-                       name="image"
-                       accept="image/*">
-                @error('image')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <small class="text-muted">Upload a new image to replace the current one (JPG, PNG, GIF, etc.) up to 2MB</small>
-            </div>
+    <label for="image" class="form-label">Post Image</label>
+    @if($post->image)
+        <div class="mb-2">
+            <img src="{{ Storage::url($post->image) }}" alt="Current post image" style="max-width: 200px" class="mb-2">
+        </div>
+    @endif
+    <input type="file" 
+           class="form-control @error('image') is-invalid @enderror" 
+           id="image" 
+           name="image">
+    <small class="text-muted">Leave empty to keep the current image</small>
+    @error('image')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+            <div class="mb-3">
+    <label for="category_id" class="form-label">category <span class="text-danger">*</span></label>
+    <select class="form-control @error('category_id') is-invalid @enderror" 
+            name="category_id" 
+            id="category_id"
+            d>
+        <option value=""> choose category</option>
+        @foreach($categories as $category)
+            <option value="{{ $category->id }}" {{ (old('category_id', $post->category_id) == $category->id) ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('category_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
            
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Update Post</button>
                 <a href="{{ route('posts.show', $post->id) }}" class="btn btn-secondary">Cancel</a>
             </div>
+
         </form>
     </div>
 </div>
