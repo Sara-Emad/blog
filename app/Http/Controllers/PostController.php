@@ -10,7 +10,15 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
+
 {
+
+  public function __construct()
+  {
+      $this->middleware('auth')->except(['index', 'show']);
+  }
+
+
     public function allPosts()
     {
         $posts = Post::with(['user', 'category'])->paginate(5);
@@ -106,4 +114,5 @@ class PostController extends Controller
         return to_route("posts.show", $post->id)
             ->with('success', 'Post updated successfully');
     }
+
 }

@@ -2,7 +2,7 @@
 @section('title')
 Edit Post
 @endsection
-@section("main")
+@section("content")
 <div class="row my-2">
     <div class="col-md-8 mx-auto">
         <div class="d-flex align-items-center mb-4">

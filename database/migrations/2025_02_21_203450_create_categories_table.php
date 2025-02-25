@@ -14,10 +14,23 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
         });
+
+        Schema::table('posts', function (Blueprint $table) {
+          $table->foreignId('category_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
+      });
     }
 
     public function down()
     {
+
+      Schema::table('posts', function (Blueprint $table) {
+        $table->dropForeign(['category_id']);
+        $table->dropColumn('category_id');
+    });
+
         Schema::dropIfExists('categories');
     }
 };

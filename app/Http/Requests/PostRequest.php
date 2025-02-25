@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PostRequest extends FormRequest
 {
-    public function authorize()
+  public function authorize()
     {
         return true;
     }
@@ -16,8 +16,8 @@ class PostRequest extends FormRequest
     $rules = [
         'title' => 'required|min:5',
         'description' => 'required|min:5|max:255',
-        'user_id' => 'required|exists:users,id',
         'category_id' => 'required|exists:categories,id',
+        'user_id' => 'required|exists:users,id'
     ];
 
     if ($this->isMethod('POST') || $this->hasFile('image')) {
@@ -26,7 +26,6 @@ class PostRequest extends FormRequest
 
     return $rules;
 }
-    
     public function messages()
     {
         return [

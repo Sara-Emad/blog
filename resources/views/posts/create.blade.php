@@ -2,7 +2,7 @@
 @section('title')
 Add Post
 @endsection
-@section("main")
+@section("content")
 <div class="row my-2">
     <div class="col-md-8 mx-auto">
         <div class="d-flex align-items-center mb-4">
@@ -22,18 +22,9 @@ Add Post
         <form action="{{ route('posts.store') }}" method="post" class="needs-validation" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-                <input type="text" 
-                       class="form-control @error('title') is-invalid @enderror" 
-                       id="title" 
-                       placeholder="Enter post title" 
-                       name="title" 
-                       value="{{ old('title') }}"
-                       d>
-                @error('title')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
+    </div>
 
             <div class="mb-3">
                 <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
@@ -80,21 +71,13 @@ Add Post
                 <small class="text-muted">Please upload an image file (JPG, PNG, GIF, etc.) up to 2MB</small>
             </div>
             <div class="mb-3">
-    <label for="category_id" class="form-label">category <span class="text-danger">*</span></label>
-    <select class="form-control @error('category_id') is-invalid @enderror" 
-            name="category_id" 
-            id="category_id"
-            d>
-        <option value=""> choose category</option>
-        @foreach($categories as $category)
-            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                {{ $category->name }}
-            </option>
-        @endforeach
-    </select>
-    @error('category_id')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
+        <label for="category_id" class="form-label">Category</label>
+        <select class="form-control" id="category_id" name="category_id">
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+    </div>
            <br>
            
             <div class="mb-3">

@@ -2,7 +2,7 @@
 @section('title')
     Categories menu
 @endsection
-@section("main")
+@section("content")
 <div class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Categories menu</h1>
@@ -35,7 +35,7 @@
                             <th>category name </th>
                             <th> posts number</th>
                             <th>Created at  </th>
-                            <th>Happens</th>
+                            <!-- <th>Happens</th> -->
                         </tr>
                     </thead>
                     <tbody>

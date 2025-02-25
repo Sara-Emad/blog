@@ -2,7 +2,7 @@
 @section('title')
     {{ $category->name }}
 @endsection
-@section("main")
+@section("content")
 <div class="container my-4">
     <div class="card shadow-sm mb-4">
         <div class="card-body">
@@ -36,7 +36,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $post->title }}</h5>
                         <p class="card-text text-truncate">{{ $post->description }}</p>
-                        <p class="text-muted"><small>By: <b>{{ $post->user->name ?? 'unknown }}</b></small></p>
+                        <p class="text-muted"><small>By: <b>{{ $post->user->name ?? 'unknown' }}</b></small></p>
                         <p class="text-muted"><small>date create : {{ $post->created_at->format('Y-m-d') }}</small></p>
                     </div>
                     <div class="card-footer bg-transparent">
