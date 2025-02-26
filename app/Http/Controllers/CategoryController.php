@@ -7,7 +7,14 @@ use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
+
 {
+
+  public function __construct()
+  {
+      $this->middleware('auth')->except(['store','destroy']);
+  }
+
     public function index()
     {
         $categories = Category::withCount('posts')->paginate(10);

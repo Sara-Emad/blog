@@ -48,23 +48,26 @@
                                 </td>
                                 <td>{{ $category->created_at->format('Y-m-d') }}</td>
                                 <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="{{ route('categories.show', $category->id) }}" class="btn btn-sm btn-primary">
-                                            <i class="bi bi-eye">show</i> 
-                                        </a>
-                                        <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-sm btn-warning">
-                                            <i class="bi bi-pencil">edit</i> 
-                                        </a>
-                                        <form action="{{ route('categories.destroy', $category->id) }}" method="post" class="d-inline">
-                                            @csrf
-                                            @method("DELETE")
-                                            <button type="submit" class="btn btn-sm btn-danger" 
-                                                    onclick="return confirm('Are you Sure?')">
-                                                <i class="bi bi-trash">delete</i> 
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+    <div class="d-flex gap-2">
+        <a href="{{ route('categories.show', $category->id) }}" class="btn btn-sm btn-primary">
+            <i class="bi bi-eye">show</i> 
+        </a>
+        <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-sm btn-warning">
+            <i class="bi bi-pencil">edit</i> 
+        </a>
+
+      
+            <form action="{{ route('categories.destroy', $category->id) }}" method="post" class="d-inline">
+                @csrf
+                @method("DELETE")
+                <button type="submit" class="btn btn-sm btn-danger" 
+                        onclick="return confirm('Are you Sure?')">
+                    <i class="bi bi-trash">delete</i> 
+                </button>
+            </form>
+      
+    </div>
+</td>
                             </tr>
                         @empty
                             <tr>

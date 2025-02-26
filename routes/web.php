@@ -17,7 +17,7 @@ Route::post('/post',[PostController::class,"store"])->name("posts.store");
 Route::get('/post/{id}/edit',[PostController::class,"edit"])->name("posts.edit");
 Route::put('/post/{id}',[PostController::class,"update"])->name("posts.update")->where("id",'[0-9]+');
 
-Route::resource('categories', CategoryController::class);
+Route::resource('categories', CategoryController::class); //for only done login ->middleware("auth")
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

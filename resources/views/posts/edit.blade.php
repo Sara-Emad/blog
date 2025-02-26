@@ -9,15 +9,7 @@ Edit Post
             <h2>Update Post</h2>
         </div>
         
-        <!-- @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif -->
+    
 
         <form action="{{ route('posts.update', $post->id) }}" method="post" enctype="multipart/form-data">
             @csrf
@@ -49,23 +41,7 @@ Edit Post
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="user_id" class="form-label">Select Author <span class="text-danger">*</span></label>
-                <select class="form-control @error('user_id') is-invalid @enderror" 
-                        name="user_id" 
-                        id="user_id"
-                        d>
-                    <option value="">Select a User</option>
-                    @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ (old('user_id', $post->user_id) == $user->id) ? 'selected' : '' }}>
-                            {{ $user->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('user_id')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
+          
 
             <div class="mb-3">
     <label for="image" class="form-label">Post Image</label>

@@ -55,21 +55,17 @@
                             <i class="bi bi-arrow-left"></i> Back
                         </a>
                         
-                        @can('update', $post)
-                            <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning">
-                                <i class="bi bi-pencil"></i> Edit
-                            </a>
-                        @endcan
+                        <a href="{{ route('posts.show', $post) }}" class="btn btn-primary">Read More</a>
                         
-                        @can('delete', $post)
+                        @can('update-post', $post)
+                            <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning">Edit</a>
+                        @endcan
+                                                
+                        @can('delete-post', $post)
                             <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" 
-                                        class="btn btn-danger" 
-                                        onclick="return confirm('Are you sure you want to delete this post?')">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                             </form>
                         @endcan
                     </div>
